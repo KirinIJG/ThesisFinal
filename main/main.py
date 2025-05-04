@@ -20,7 +20,6 @@ TOP_LEFT_BTN_SIZE = (40, 30)
 SAVE_BTN_POS = (700, 360)
 SAVE_BTN_SIZE = (80, 30)
 
-# Track current view mode
 CAMERA_VIEW = 0
 BEV_VIEW = 1
 ORIENTATION_VIEW = 2
@@ -37,7 +36,7 @@ def show_loading_screen(duration=2.0):
     start_time = time.time()
     while time.time() - start_time < duration:
         cv2.imshow("Unified View", loading)
-        if cv2.waitKey(100) == 27:  # Allow ESC to exit
+        if cv2.waitKey(100) == 27:  
             break
 
 def handle_mouse(event, x, y, flags, param):
@@ -76,68 +75,50 @@ def draw_orientation_markings(frame, camera_index):
     h, w = frame.shape[:2]
 
     if camera_index == 0:  # FRONT camera
- 
         pt_left = (0, int(h*0.70))    
         pt_middle = (int(w*0.5), int(h*0.80))  
         pt_right = (w, int(h*0.70))    
 
-
         cv2.line(frame, pt_left, pt_middle, (0, 255, 0), 2)
-
         cv2.line(frame, pt_middle, pt_right, (0, 255, 0), 2)
 
         for pt in [pt_left, pt_middle, pt_right]:
             cv2.circle(frame, pt, 4, (0, 255, 255), -1)
 
     elif camera_index == 1:  # BACK camera
-
         pt_left = (0, int(h*0.60))    
         pt_middle = (int(w*0.5), int(h*0.65))
         pt_right = (w, int(h*0.60))   
 
-
         cv2.line(frame, pt_left, pt_middle, (0, 255, 0), 2)
- 
         cv2.line(frame, pt_middle, pt_right, (0, 255, 0), 2)
-
 
         for pt in [pt_left, pt_middle, pt_right]:
             cv2.circle(frame, pt, 4, (0, 255, 255), -1)
 
     elif camera_index == 2:  # LEFT camera
-
         pt_left = (0, int(h*0.60))   
         pt_middle = (int(w*0.55), int(h*0.9))  
         pt_right = (w, int(h*0.80))   
-
-
+        
         cv2.line(frame, pt_left, pt_middle, (0, 255, 0), 2)
-
         cv2.line(frame, pt_middle, pt_right, (0, 255, 0), 2)
-
 
         for pt in [pt_left, pt_middle, pt_right]:
             cv2.circle(frame, pt, 4, (0, 255, 255), -1)
 
-
     elif camera_index == 3:  # RIGHT camera
-
         pt_left = (0, int(h*0.80))  
         pt_middle = (int(w*0.45), int(h*0.9))  
         pt_right = (w, int(h*0.60))  
 
-   
         cv2.line(frame, pt_left, pt_middle, (0, 255, 0), 2)
-
         cv2.line(frame, pt_middle, pt_right, (0, 255, 0), 2)
-
 
         for pt in [pt_left, pt_middle, pt_right]:
             cv2.circle(frame, pt, 4, (0, 255, 255), -1)
 
     return frame
-
-
 
 def unified_display_loop(shared_data):
     current_view_mode = [CAMERA_VIEW]
