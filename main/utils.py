@@ -131,8 +131,7 @@ def match_tracks(detections, object_positions, distance_threshold):
 
 def correct_speed_relative_to_ego(rel_vector_mps, host_speed_kph, camera_index):
     v_ego_mps = host_speed_kph / 3.6
-
-    # Define camera orientation-based ego-motion projection
+    
     if camera_index == 0:      # FRONT camera
         v_ego_proj = np.array([0, -v_ego_mps])
     elif camera_index == 1:    # BACK camera
@@ -166,11 +165,9 @@ def draw_predictions(frame, detections, gray_frame, prev_gray, object_positions,
                 direction = direction_from_displacement(dx, dy, camera_index, angle)
                 cv2.putText(frame, f"Dir: {direction}", (center_x, center_y - 25), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 1)
 
-                # Relative velocity vector in pixels
                 rel_vector_mps = displacement / FRAME_TIME
-                rel_vector_mps /= 150.0  # crude px-to-meter factor or use proper distance map
+                rel_vector_mps /= 150.0  
 
-                # Correct relative motion using ego vehicle
                 v_world = correct_speed_relative_to_ego(rel_vector_mps, host_speed_kph, camera_index)
                 world_speed_kph = np.linalg.norm(v_world) * 3.6
                 smoothed_speed = calculate_smoothed_speed(track_id, world_speed_kph)
